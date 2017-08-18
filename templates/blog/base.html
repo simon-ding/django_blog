@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset='utf-8'>
+            {% block head %}
+            <title>Simon's blog</title>
+            <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    	    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	    	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+			{% load static %}
+			<link rel="stylesheet" type="text/css" href="{% static 'blog/mystyle.css' %}">
+            {% endblock %}
+	</head>
+	<body>
+	  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class='navbar-header'>
+          <a href="{% url 'index' %}" class='navbar-brand'>Simon's Blog</a>
+				</div>
+				<div>
+				<ul class='nav navbar-nav navbar-left'>
+                    <li ><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'archive' %}">Archive</a></li>
+                    <li><a href="#">About</a></li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search" action="{% url 'index' %}" method="GET">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" name="query">
+            </div>
+            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+        </form>
+
+				
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#"class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
+                            Hello, {{ user.username }} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+														<li><a href="#">Management</a></li>
+                            <li><a href="{% url 'post' %}">New Post</a><li>
+                            <li><a href="#">Personal info</a></li>
+                            <li><a href="{% url 'logout' %}">Sign out</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
+                    {% endif %}
+				</ul>
+				</div>
+			</div>
+	    </nav>
+	    <div class="contents container">
+	    {% block body %}
+	    {% endblock %}
+	    </div>
+	<body>
+</html>

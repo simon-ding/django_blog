@@ -1,0 +1,17 @@
+.article {
+    box-shadow: rgb(167, 163, 163) 5px 5px 20px;
+    background-color: white;
+    padding: 20px 30px;
+    margin-bottom: 40px;
+    }
+
+.aside{
+    box-shadow: 5px 5px 20px #CCC;
+    background-color: white;
+    padding: 20px 30px;
+    margin-bottom: 40px;
+}
+
+.contents {
+    padding-top:60px;
+}

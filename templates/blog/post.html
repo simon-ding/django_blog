@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+{% block body %}
+    <h1 class='text-center page-header'>{{ post.headline }}</h1>
+    {{ post.html | safe }}
+    {% if user.is_authenticated %}
+    <button class="btn btn-info btn-sm"><span class="glyphicon glyphicon-edit"></span> Edit</button>
+    <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+    {% endif %}
+{% endblock %}
