@@ -1,7 +1,7 @@
 from markdown import markdown
 from django.db import models
 from django.utils import timezone
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 
 class Category(models.Model):
@@ -38,7 +38,7 @@ class Post(models.Model):
         return self.headline
 
     def get_absolute_url(self):
-        return reverse('index')
+        return reverse_lazy('post', kwargs={'pk':self.pk})
 
     class Meta:
         ordering = ['-publication_date', ]
@@ -48,7 +48,8 @@ class Comment(models.Model):
     email = models.EmailField()
     content = models.TextField()
     date = models.DateTimeField(editable=False, default=timezone.now)
-    reply = models.OneToOneField('self', on_delete=models.CASCADE, blank=True)
+    reply = models.OneToOneField('self', on_delete=models.CASCADE, blank=True, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return self.name

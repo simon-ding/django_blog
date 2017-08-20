@@ -19,8 +19,17 @@
 				</div>
 				<div>
 				<ul class='nav navbar-nav navbar-left'>
-                    <li ><a href="{% url 'index' %}">Home</a></li>
-                    <li><a href="{% url 'archive' %}">Archive</a></li>
+                    {% if post_list %}
+                        <li class="active"><a href="{% url 'index' %}">Home</a></li>
+                    {% else %}
+                        <li ><a href="{% url 'index' %}">Home</a></li>
+                    {% endif %}
+
+                    {% if archive_list %}
+                        <li class="active"><a href="{% url 'archive' %}">Archive</a></li>
+                    {% else %}
+                        <li><a href="{% url 'archive' %}">Archive</a></li>
+                    {% endif %}
                     <li><a href="#">About</a></li>
         </ul>
         <form class="navbar-form navbar-left" role="search" action="{% url 'index' %}" method="GET">
@@ -39,7 +48,7 @@
                             Hello, {{ user.username }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
 														<li><a href="#">Management</a></li>
-                            <li><a href="{% url 'post' %}">New Post</a><li>
+                            <li><a href="{% url 'add_post' %}">New Post</a><li>
                             <li><a href="#">Personal info</a></li>
                             <li><a href="{% url 'logout' %}">Sign out</a></li>
                         </ul>

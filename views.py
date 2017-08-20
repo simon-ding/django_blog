@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView, LogoutView, logout_then_login
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from .models import Post, Category, Tag, Comment
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 
 class IndexView(ListView):
@@ -36,18 +36,32 @@ class IndexView(ListView):
         return context
 
 
-class PostView(DetailView):
+class PostView(FormMixin, DetailView):
     model = Post
     template_name = 'blog/post.html'
+    form_class = CommentForm
 
-class ArchiveView():
-    pass
+    def form_valid(self, form):
+        c = Comment(name=form.cleaned_data['name'], email=form.cleaned_data['email'],\
+                content=form.cleaned_data['content'], post=self.get_object())
+        c.save()
+        return super().form_valid(form)
+    def get_success_url(self):
+        self.object = self.get_object()
+        return self.object.get_absolute_url()
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
 
 class BlogLoginView(LoginView):
     template_name = 'blog/login.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['next'] = self.request.GET.get('next', '')
         return context
 
 
@@ -68,11 +82,6 @@ class AddPostView(LoginRequiredMixin, FormView):
 class ArchiveView(ListView):
     model = Post
     template_name = 'blog/archive.html'
-
-
-class CommentView(FormView):
-    model = Comment
-    def form_valid(self, form):
-        return super().form_valid(form)
+    context_object_name = 'archive_list'
 
 

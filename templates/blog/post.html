@@ -6,4 +6,29 @@
     <button class="btn btn-info btn-sm"><span class="glyphicon glyphicon-edit"></span> Edit</button>
     <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Delete</button>
     {% endif %}
+
+
+    <div>
+        {% load static %}
+    {% for comment in post.comment_set.all %}
+    <div class="media">
+         <div class="media-left">
+
+             <img src="{% static 'blog/img/img_avatar1.png' %}" class="media-object" style="width:60px">
+        </div>
+    <div class="media-body">
+        <h4 class="media-heading">{{ comment.name }}</h4>
+        <p>{{ comment.content }}</p>
+    </div>
+  </div>
+    {% endfor %}
+    </div>
+    <h4>Leave your comment below:</h4>
+    <form action="{% url 'post' post.pk %}" method="POST">
+        {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-default" type="submit">Submit</button>
+    </form>
+
+
 {% endblock %}

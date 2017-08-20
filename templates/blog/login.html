@@ -4,7 +4,9 @@
 <form method="POST" action="{% url 'login' %}">
     {% csrf_token %} 
     {{ form }}
-    <input type='hidden' name='next' value="{{ next }}">
+    {% if request.GET.next %}
+    <input type='hidden' name='next' value="{{ request.GET.next }}">
+    {% endif %}
     <input type='submit' class='btn btn-default'>
 </form>
 {% endblock %}
